@@ -52,7 +52,9 @@ namespace AdDataAggregation.Services
 
             var result = data.OrderByDescending(ad => ad.NumPages)
                             .GroupBy(ad => ad.BrandName)
-                            .SelectMany(g => g.Take(5));
+                            .SelectMany(g => g.Take(5))
+                            .OrderByDescending(ad => ad.NumPages)
+                            .ThenBy(ad => ad.BrandName);
 
             return result;
         }
@@ -64,7 +66,9 @@ namespace AdDataAggregation.Services
             var result = data.OrderByDescending(ad => ad.NumPages)
                             .GroupBy(ad => ad.BrandName)
                             .Select(g => g.First())
-                            .Take(5);
+                            .Take(5)
+                            .OrderByDescending( ad => ad.NumPages )
+                            .ThenBy( ad => ad.BrandName );
 
             return result;
         }

@@ -7,8 +7,9 @@ namespace AdDataAggregation.Services
     {
         private static readonly Lazy<IAdDataService> lazyService = new Lazy<IAdDataService>(
         
-            () => new AdDataServiceReference.AdDataServiceClient()
+            () =>
+            new AdDataServiceReference.AdDataServiceClient()
         );
-        public static IAdDataService Service => lazyService.Value;
+        public static IAdDataService Build() => lazyService.Value;
     }
 }
