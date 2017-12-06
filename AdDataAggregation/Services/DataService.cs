@@ -15,13 +15,31 @@ namespace AdDataAggregation.Services
         {
             _serviceClient = serviceClient;
         }
+        
+        public IEnumerable<AdDTO> GetAdData(string type = "")
+        {
+            var result = Enumerable.Empty<AdDTO>();
 
-        //public DataService( )
-        //    : this( new AdDataServiceClient() )
-        //{
+            switch( type )
+            {
+                case "AdDetails":
+                    result = GetAll();
+                    break;
+                case "CoverAds":
+                    result = GetCoverAds();
+                    break;
+                case "Top5AdsForEachBrand":
+                    result = GetTop5AdsForEachBrand();
+                    break;
+                case "Top5BrandsWithMostCoverage":
+                    result = GetTop5BrandsWithMostCoverage();
+                    break;
+            }
 
-        //}
-        public IEnumerable<AdDTO> GetAll( )
+            return result;
+        }
+
+        private IEnumerable<AdDTO> GetAll( )
         {
             var data   = _serviceClient.GetAdDataByDateRange(new DateTime(2011, 1, 1), new DateTime(2011, 4, 1));
 
@@ -30,7 +48,7 @@ namespace AdDataAggregation.Services
             return result;
         }
 
-        public IEnumerable<AdDTO> GetCoverAds( )
+        private IEnumerable<AdDTO> GetCoverAds( )
         {
             const string position = "cover";
 
@@ -46,7 +64,7 @@ namespace AdDataAggregation.Services
             return result;
         }
 
-        public IEnumerable<AdDTO> GetTop5AdsForEachBrand( )
+        private IEnumerable<AdDTO> GetTop5AdsForEachBrand( )
         {
             var data   = this.GetAll();
 
@@ -59,7 +77,7 @@ namespace AdDataAggregation.Services
             return result;
         }
 
-        public IEnumerable<AdDTO> GetTop5BrandsWithMostCoverage()
+        private IEnumerable<AdDTO> GetTop5BrandsWithMostCoverage()
         {
             var data   = this.GetAll();
 

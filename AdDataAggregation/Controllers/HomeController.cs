@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using AdDataAggregation.Services;
 
 namespace AdDataAggregation.Controllers
@@ -10,11 +6,6 @@ namespace AdDataAggregation.Controllers
     public class HomeController : Controller
     {
         private readonly IDataService _dataService;
-
-        //public HomeController( )
-        //    :this(new DataService())
-        //{
-        //}
 
         public HomeController(IDataService dataService)
         {
@@ -27,32 +18,12 @@ namespace AdDataAggregation.Controllers
             return View();
         }
 
-        public JsonResult AdDetails( )
+        public JsonResult AdDetails( string type = "")
         {
-            var result = _dataService.GetAll();
+            var result = _dataService.GetAdData(type);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult CoverAds( )
-        {
-            var result = _dataService.GetCoverAds();
-
-            return Json( result , JsonRequestBehavior.AllowGet );
-        }
-
-        public JsonResult Top5AdsForEachBrand( )
-        {
-            var result = _dataService.GetTop5AdsForEachBrand();
-
-            return Json( result , JsonRequestBehavior.AllowGet );
-        }
-
-        public JsonResult Top5BrandsWithMostCoverage( )
-        {
-            var result = _dataService.GetTop5BrandsWithMostCoverage();
-
-            return Json( result , JsonRequestBehavior.AllowGet );
-        }
     }
 }
