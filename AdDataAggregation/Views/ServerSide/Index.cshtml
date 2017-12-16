@@ -1,0 +1,98 @@
+﻿@using System.Web.UI.WebControls
+@using AdDataAggregation.WebGridExtensions
+@model IEnumerable<AdDataAggregation.Models.AdDTO>
+
+@{
+    ViewBag.Title = "WebGrid";
+    var grid = new WebGrid(canPage: true, rowsPerPage: 50);
+    grid.Bind(source: Model, rowCount: ViewBag.totalRecord, autoSortAndPage: false);
+}
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+
+<div class="container">
+    <h2>WebGrid List</h2>
+
+    <div class="row">
+        <div >
+            @using( Html.BeginForm( "Index" , "ServerSide" , FormMethod.Get , new { @class = "navbar-form navbar-left" } ) )
+            {
+                <div class="form-group">
+                    <input type="text" name="search" value="@ViewBag.search" class="form-control" placeholder="search..." />
+                </div>
+                <button type="submit" value="search" class="btn btn-success">Search</button>
+            }
+        </div>
+    </div>
+    
+    <div class="row">
+        <div>
+            @Html.DropDownList("type"
+                                ,new SelectList(new [] {
+                                                    new SelectListItem() { Text = "Ad Details"                    , Value = "AdDetails" },
+                                                    new SelectListItem() { Text = "Cover Ads"                     , Value = "CoverAds" },
+                                                    new SelectListItem() { Text = "Top5 Ads For Each Brand"       , Value = "Top5AdsForEachBrand" },
+                                                    new SelectListItem() { Text = "Top5 Brands With Most Coverage", Value = "Top5BrandsWithMostCoverage" }
+                                                }, 
+                                                "Value",
+                                                "Text",
+                                                ViewBag.type )
+
+                                ,"--- SELECT ---" 
+                                ,new { @class = "form-control", @onchange ="callChangefunc(this.value)" }
+                                                                // onchange = "form.submit();"
+            
+            )
+        </div>
+    </div>
+
+    <div class="row">
+        @grid.Table(
+                 tableStyle: "table table-responsive table-bordered" ,
+                 columns: grid.Columns(
+                     grid.Column( columnName: "AdId"      , header: "AdId" ) ,
+                     grid.Column( columnName: "BrandId"   , header: "BrandId" ) ,
+                     grid.Column( columnName: "BrandName" , header: "BrandName" ) ,
+                     grid.Column( columnName: "NumPages"  , header: "NumPages" ) ,
+                     grid.Column( columnName: "Position"  , header: "Position" )
+                     )
+                 );
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            @grid.PagerList( mode: WebGridPagerModes.All ,
+                     paginationStyle: "pagination pagination-small pagination-right" )
+        </div>
+    </div>
+
+    @Html.Hidden( "dir" , grid.SortDirection )
+    @Html.Hidden( "col" , grid.SortColumn )
+
+    <script>
+        $(function() {
+            try {
+                var dir = $("#dir").val();
+                var col = $("#col").val();
+                var header = $(`th a[href*=${col}]`);
+                if (dir === "Ascending") {
+                    header.text(`${ header.text() }  ▲`);
+                }
+                if (dir === "Descending") {
+                    header.text(`${ header.text() }  ▼`);
+                }
+            } catch (e) {
+                
+            }
+        });
+
+        function callChangefunc(val)
+        {
+            window.location.href= "/ServerSide/?type=" + val;
+        }
+    </script>
+</div>

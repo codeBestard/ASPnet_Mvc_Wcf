@@ -2,7 +2,9 @@
 using System.Reflection;
 using System.Web.Mvc;
 using AdDataAggregation.AdDataServiceReference;
+using AdDataAggregation.FilterPlugins;
 using AdDataAggregation.Services;
+using AutoMapper;
 using SimpleInjector;
 using SimpleInjector.Integration.Web;
 using SimpleInjector.Integration.Web.Mvc;
@@ -18,9 +20,10 @@ namespace AdDataAggregation.App_Start
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
             // Register your types, for instance:
-            container.Register<IDataService , DataService>( Lifestyle.Scoped );
+            container.Register<IDataService, DataService>( Lifestyle.Scoped );
             container.RegisterSingleton<IAdDataService>( WCFServiceFactory.Build );
-
+            container.RegisterCollection<BaseDataFilter>( DataFilterTypeRegistry.FilterTypes );
+            container.RegisterSingleton<IMapper>( AutoMapper.Mapper.Instance );
             // This is an extension method from the integration package.
             container.RegisterMvcControllers( Assembly.GetExecutingAssembly() );
 

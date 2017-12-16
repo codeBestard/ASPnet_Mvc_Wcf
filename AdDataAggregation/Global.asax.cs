@@ -14,8 +14,8 @@ namespace AdDataAggregation
     {
         protected void Application_Start( )
         {
-            IOC.Initialize();
             AutoMapper.Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
+            IOC.Initialize();
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters( GlobalFilters.Filters );
             RouteConfig.RegisterRoutes( RouteTable.Routes );

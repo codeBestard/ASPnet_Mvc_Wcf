@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+
+
+<script>
+
+    var myService = (function($) {
+        function loadData(actionName, tableName) {
+
+                $(`#${tableName}`).DataTable({
+                    searching: false,
+                    iDisplayLength: 50,
+                    destroy: true,
+                    order: [],
+                    ajax: {
+                        url: "@Url.Content("~/")" +`ClientSide/AdDetails`,
+                        data: function(d) {
+                            d.type = actionName;
+                        },
+                        dataSrc :""
+                    },
+                    columns: [
+                        { data: "AdId", name: "AdId" },
+                        { data: "BrandId", name:"BrandId" },
+                        { data: "BrandName", name: "BrandName" },
+                        { data: "NumPages", name: "NumPages" },
+                        { data: "Position", name: "Position" }
+                    ]
+                });
+        };
+
+        return {
+            loadData
+        };
+
+    })($);
+
+
+    function init() {
+        let select = document.getElementById("choices");
+        select.onchange = event => {
+            let actionName = event.target[event.target.selectedIndex].value;
+            myService.loadData( actionName, "AdInfo" );
+        };
+    }
+
+    $(document).ready(function () {
+        init();
+        $('#choices').change();
+    });
+
+</script>
+
+<div style="margin: 50px auto;">
+    <select id="choices">
+        <option value="AdDetails" selected>All</option>
+        <option value="CoverAds">CoverAds</option>
+        <option value="Top5AdsForEachBrand">Top5AdsForEachBrand</option>
+        <option value="Top5BrandsWithMostCoverage">Top 5 Brands With Most Coverage</option>
+    </select>
+</div>
+
+
+<div class="form-horizontal">
+    <table id="AdInfo" class="table table-bordered  table-hover">
+        <thead>
+            <tr>
+                <th>Ad Id</th>
+                <th>Brand Id</th>
+                <th>Brand Name</th>
+                <th>NumPages</th>
+                <th>Position</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+</div>
