@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using AdDataAggregation.Services;
@@ -22,9 +23,9 @@ namespace AdDataAggregation.Controllers
             return View();
         }
 
-        public JsonResult AdDetails( string type = "" )
+        public async Task<JsonResult> AdDetails( string type = "" )
         {
-            var result = _dataService.GetAdData( type );
+            var result = await _dataService.GetAdDataAsync( type );
 
             return Json( result , JsonRequestBehavior.AllowGet );
         }

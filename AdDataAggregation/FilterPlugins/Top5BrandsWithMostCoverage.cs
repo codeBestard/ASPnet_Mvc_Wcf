@@ -14,14 +14,8 @@ namespace AdDataAggregation.FilterPlugins
         {
         }
 
-        public override IEnumerable<AdDTO> GetData( )
-        {
-            var result = base.GetData();
-            result     = Filter( result );
-            return result;
-        }
 
-        private IEnumerable<AdDTO> Filter( IEnumerable<AdDTO> data )
+        protected override IEnumerable<AdDTO> Filter( IEnumerable<AdDTO> data )
         {
             var result = data.OrderByDescending( ad => ad.NumPages )
                             .GroupBy( ad => ad.BrandName )

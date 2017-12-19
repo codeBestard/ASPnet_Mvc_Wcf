@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AdDataAggregation.AdDataServiceReference;
 using AdDataAggregation.Models;
 using AutoMapper;
@@ -11,6 +12,7 @@ namespace AdDataAggregation.FilterPlugins
     {
         string @Type { get; }
         IEnumerable<AdDTO> GetData();
+        Task<IEnumerable<AdDTO>> GetDataAsync( );
     }
 
     public abstract class BaseDataFilter : IDataFilter
@@ -18,23 +20,47 @@ namespace AdDataAggregation.FilterPlugins
         private readonly IAdDataService _serviceClient;
         private readonly IMapper        _mapper;
 
+        public static readonly BaseDataFilter NullFilter = new NullOfBase(null, null);
+        private class NullOfBase : BaseDataFilter
+        {
+            public override string Type => "NULL";
+            public NullOfBase(IAdDataService serviceClient, IMapper mapper)
+                : base(serviceClient, mapper)
+            { }
+        }
+    
+
+        // TODO: get values from configuration
+        private static readonly DateTime from = new DateTime( 2011 , 1 , 1 );
+        private static readonly DateTime to   = new DateTime( 2011 , 4 , 1 );
+
         public abstract string @Type { get; }
 
         protected BaseDataFilter(IAdDataService serviceClient, IMapper mapper)
         {
             _serviceClient = serviceClient;
-            _mapper = mapper;
+            _mapper        = mapper;
         }
 
         public virtual IEnumerable<AdDTO> GetData()
         {
-            // TODO: get values from configuration
-            var from   = new DateTime(2011, 1, 1);
-            var to     = new DateTime(2011, 4, 1);
-
             var data   = _serviceClient.GetAdDataByDateRange(from,to);
-            var result = _mapper.Map<IEnumerable<AdDTO>>(data);
+            var dtos   = _mapper.Map<IEnumerable<AdDTO>>(data);
+            var result = this.Filter( dtos );
             return result;
+        }
+
+        public virtual async Task<IEnumerable<AdDTO>> GetDataAsync( )
+        {
+            var data   = await _serviceClient.GetAdDataByDateRangeAsync( from , to );
+            var dtos   = _mapper.Map<IEnumerable<AdDTO>>( data );
+            var result = this.Filter( dtos );
+            return result;
+        }
+
+        protected virtual IEnumerable<AdDTO> Filter(IEnumerable<AdDTO> data)
+        {
+            return data;
         }
     }
 }
