@@ -8,16 +8,16 @@ using AdDataAggregation.Services;
 
 namespace AdDataAggregation.Controllers
 {
-    public class ClientSideController : Controller
+    public class ClientSideRenderingController : Controller
     {
 
         private readonly IDataService _dataService;
 
-        public ClientSideController( IDataService dataService )
+        public ClientSideRenderingController( IDataService dataService )
         {
             _dataService = dataService;
         }
-        // GET: ClientSide
+
         public ActionResult Index()
         {
             return View();

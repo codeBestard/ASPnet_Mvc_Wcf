@@ -19,7 +19,7 @@
 
     <div class="row">
         <div >
-            @using( Html.BeginForm( "Index" , "ServerSide" , FormMethod.Get , new { @class = "navbar-form navbar-left" } ) )
+            @using( Html.BeginForm( "Index" , "ServerSideRendering" , FormMethod.Get , new { @class = "navbar-form navbar-left" } ) )
             {
                 <div class="form-group">
                     <input type="text" name="search" value="@ViewBag.search" class="form-control" placeholder="search..." />
@@ -92,7 +92,7 @@
 
         function callChangefunc(val)
         {
-            window.location.href= "/ServerSide/?type=" + val;
+            window.location.href= "/ServerSideRendering/?type=" + val;
         }
     </script>
 </div>

@@ -168,9 +168,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\ClientSideController.cs" />
+    <Compile Include="Controllers\ClientSideRenderingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ServerSideController.cs" />
+    <Compile Include="Controllers\ServerSideRenderingController.cs" />
     <Compile Include="FilterPlugins\AdDetails.cs" />
     <Compile Include="FilterPlugins\CoverAds.cs" />
     <Compile Include="FilterPlugins\BaseDataFilter.cs" />
@@ -249,9 +249,9 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\ClientSide\Index.cshtml" />
+    <Content Include="Views\ClientSideRendering\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\ServerSide\Index.cshtml" />
+    <Content Include="Views\ServerSideRendering\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

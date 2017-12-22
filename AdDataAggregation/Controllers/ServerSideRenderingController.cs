@@ -7,12 +7,11 @@ using AdDataAggregation.Models;
 
 namespace AdDataAggregation.Controllers
 {
-    public class ServerSideController : Controller
+    public class ServerSideRenderingController : Controller
     {
-
         private readonly IDataService _dataService;
 
-        public ServerSideController( IDataService dataService )
+        public ServerSideRenderingController( IDataService dataService )
         {
             _dataService = dataService;
         }
