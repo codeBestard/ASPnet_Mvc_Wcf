@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AdDataAggregation.AdDataServiceReference;
 using AdDataAggregation.Models;
@@ -27,6 +28,7 @@ namespace AdDataAggregation.FilterPlugins
             public NullOfBase(IAdDataService serviceClient, IMapper mapper)
                 : base(serviceClient, mapper)
             { }
+            protected override IEnumerable<AdDTO> Filter(IEnumerable<AdDTO> data) => Enumerable.Empty<AdDTO>();
         }
     
 
@@ -58,9 +60,6 @@ namespace AdDataAggregation.FilterPlugins
             return result;
         }
 
-        protected virtual IEnumerable<AdDTO> Filter(IEnumerable<AdDTO> data)
-        {
-            return data;
-        }
+        protected abstract IEnumerable<AdDTO> Filter(IEnumerable<AdDTO> data);
     }
 }

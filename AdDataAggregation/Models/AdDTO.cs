@@ -9,5 +9,6 @@ namespace AdDataAggregation.Models
         public String BrandName { get; set; }
         public Decimal NumPages { get; set; }
         public string Position  { get; set; }
+
     }
 }
