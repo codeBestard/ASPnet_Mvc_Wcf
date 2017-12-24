@@ -3,7 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using AdDataAggregation.Services;
 using System.Linq.Dynamic;
-using AdDataAggregation.Models;
+using AdModels;
 
 namespace AdDataAggregation.Controllers
 {

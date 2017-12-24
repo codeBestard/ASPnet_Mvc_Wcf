@@ -1,4 +1,5 @@
 ﻿using AdDataAggregation.AdDataServiceReference;
+using AdModels;
 using AutoMapper;
 
 namespace AdDataAggregation.Models

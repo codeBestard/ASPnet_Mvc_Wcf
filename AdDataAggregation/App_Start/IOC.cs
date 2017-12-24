@@ -2,9 +2,9 @@
 using System.Reflection;
 using System.Web.Mvc;
 using AdDataAggregation.AdDataServiceReference;
-using AdDataAggregation.FilterPlugins;
 using AdDataAggregation.Services;
 using AutoMapper;
+using FilterPlugins;
 using SimpleInjector;
 using SimpleInjector.Integration.Web;
 using SimpleInjector.Integration.Web.Mvc;
@@ -22,8 +22,9 @@ namespace AdDataAggregation.App_Start
             // Register your types, for instance:
             container.Register<IDataService, DataService>( Lifestyle.Scoped );
             container.RegisterSingleton<IAdDataService>( WCFServiceFactory.Build );
-            container.RegisterCollection<BaseDataFilter>( DataFilterTypeRegistry.FilterTypes );
             container.RegisterSingleton<IMapper>( AutoMapper.Mapper.Instance );
+            container.RegisterCollection<IDataFilter>( DataFilterTypeRegistry.FilterTypes );
+
             // This is an extension method from the integration package.
             container.RegisterMvcControllers( Assembly.GetExecutingAssembly() );
 

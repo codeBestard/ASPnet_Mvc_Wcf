@@ -171,17 +171,11 @@
     <Compile Include="Controllers\ClientSideRenderingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServerSideRenderingController.cs" />
-    <Compile Include="FilterPlugins\AdDetails.cs" />
-    <Compile Include="FilterPlugins\CoverAds.cs" />
-    <Compile Include="FilterPlugins\BaseDataFilter.cs" />
     <Compile Include="Providers\MapperProvider.cs" />
     <Compile Include="Services\DataFilterRegistry.cs" />
-    <Compile Include="FilterPlugins\Top5AdsForEachBrand.cs" />
-    <Compile Include="FilterPlugins\Top5BrandsWithMostCoverage.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AdDTO.cs" />
     <Compile Include="Models\AutomapperProfile.cs" />
     <Compile Include="Models\GridOption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -274,6 +268,16 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\AdDataServiceReference\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdModels\AdModels.csproj">
+      <Project>{3C358E4E-CA5D-4403-A83B-25BABCCC024F}</Project>
+      <Name>AdModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FilterPlugins\FilterPlugins.csproj">
+      <Project>{9BB1A993-B439-4C35-B8BF-C1BC3552E1B8}</Project>
+      <Name>FilterPlugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
