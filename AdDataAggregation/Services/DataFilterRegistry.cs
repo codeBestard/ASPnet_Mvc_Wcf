@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FilterPlugins;
+using SimpleInjector;
 
 
 namespace AdDataAggregation.Services
@@ -9,8 +10,10 @@ namespace AdDataAggregation.Services
     /// <summary>
     /// Plugin registry, The lazy function is optional if you want to deploy plugin dlls without rebooting the web server
     /// </summary>
-    public sealed class DataFilterTypeRegistry
+    public sealed class DataFilterRegistry : IDataFilterRegistry
     {
+        private readonly Container _container;
+
         private static readonly Lazy<IEnumerable<Type>> _filterTypes =
                      new Lazy<IEnumerable<Type>>(
                 ( ) =>
@@ -30,5 +33,21 @@ namespace AdDataAggregation.Services
                 } );
 
         public static IEnumerable<Type> FilterTypes => _filterTypes.Value;
+
+        public DataFilterRegistry( Container container )
+        {
+            _container = container;
+        }
+
+        public IDataFilter FindFilterPlugin( string type = "" )
+        {
+            foreach( IDataFilter filter in _container.GetAllInstances( typeof( IDataFilter ) ) )
+            {
+                if( !( filter.Type?.Equals( type , StringComparison.OrdinalIgnoreCase ) ?? false ) )
+                    continue;
+                return filter;
+            }
+            return NullFilter.Instance;
+        }
     }
 }

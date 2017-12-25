@@ -21,9 +21,13 @@ namespace AdDataAggregation.App_Start
 
             // Register your types, for instance:
             container.Register<IDataService, DataService>( Lifestyle.Scoped );
+            container.Register<IDataFilterRegistry , DataFilterRegistry>( Lifestyle.Scoped );
+
             container.RegisterSingleton<IAdDataService>( WCFServiceFactory.Build );
             container.RegisterSingleton<IMapper>( AutoMapper.Mapper.Instance );
-            container.RegisterCollection<IDataFilter>( DataFilterTypeRegistry.FilterTypes );
+
+            container.RegisterCollection<IDataFilter>( DataFilterRegistry.FilterTypes );
+            
 
             // This is an extension method from the integration package.
             container.RegisterMvcControllers( Assembly.GetExecutingAssembly() );

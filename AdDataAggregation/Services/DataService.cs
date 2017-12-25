@@ -6,22 +6,25 @@ using AdDataAggregation.AdDataServiceReference;
 using AdModels;
 using AutoMapper;
 using FilterPlugins;
-using SimpleInjector;
 
 namespace AdDataAggregation.Services
 {
     public sealed class DataService : IDataService
     {
-        private readonly Container      _container;
-        private readonly IAdDataService _serviceClient;
-        private readonly IMapper        _mapper;
+        private readonly IAdDataService          _serviceClient;
+        private readonly IMapper                 _mapper;
+        private readonly IDataFilterRegistry     _dataFilterRegistry;
+
         private static readonly IEnumerable<AdDTO> EmptyList = Enumerable.Empty<AdDTO>();
 
-        public DataService( SimpleInjector.Container container,  IAdDataService serviceClient, IMapper mapper )
+        public DataService(
+            IMapper mapper,
+            IAdDataService serviceClient,
+            IDataFilterRegistry dataFilterRegistry )
         {
-            _container     = container;
-            _serviceClient = serviceClient;
-            _mapper        = mapper;
+            _serviceClient          = serviceClient;
+            _mapper                 = mapper;
+            _dataFilterRegistry = dataFilterRegistry;
         }
 
         // TODO: get values from configuration
@@ -30,7 +33,7 @@ namespace AdDataAggregation.Services
 
         public IEnumerable<AdDTO> GetAdData(string type = "")
         {
-            var plugin = FindFilterPlugin( type );
+            var plugin = _dataFilterRegistry.FindFilterPlugin( type );
             if( ReferenceEquals( NullFilter.Instance , plugin ) )
                 return EmptyList;
 
@@ -48,7 +51,7 @@ namespace AdDataAggregation.Services
 
         public async Task<IEnumerable<AdDTO>> GetAdDataAsync( string type = "" )
         {
-            var plugin = FindFilterPlugin( type );
+            var plugin = _dataFilterRegistry.FindFilterPlugin( type );
             if ( ReferenceEquals( NullFilter.Instance , plugin ) )
                 return EmptyList;
 
@@ -62,17 +65,6 @@ namespace AdDataAggregation.Services
             var dtos = _mapper.Map<IEnumerable<AdDTO>>( data );
             return dtos;
         }
-
-        private IDataFilter FindFilterPlugin(string type = "")
-        {
-            foreach ( IDataFilter filter in _container.GetAllInstances(typeof( IDataFilter ) ))
-            {
-                if (!(filter.Type?.Equals(type, StringComparison.CurrentCultureIgnoreCase) ?? false))
-                    continue;
-                return filter;
-            }
-            return NullFilter.Instance;
-        }
-
+        
     }
 }
